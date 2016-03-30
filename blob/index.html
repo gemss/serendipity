@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Blob</title>
+	<meta charset="utf-8" />
+
+	<script type="text/javascript">
+
+        // 创建一个8字节的ArrayBuffer
+        var b = new ArrayBuffer(8);
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', './blob.jpg', true);
+		xhr.responseType = 'blob';
+
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				// Note: .response instead of .responseText
+				var blob = new Blob([this.response], {type: 'image/png'});
+
+				var reader = new FileReader();
+				reader.addEventListener("loadend", function() {
+					console.log(blob, reader.result);
+					// reader.result contains the contents of blob as a typed array
+				});
+				reader.readAsArrayBuffer(blob);
+
+                var blobURL = URL.createObjectURL(blob);
+
+                console.log(blob, blobURL);
+
+                document.getElementById('J_blobImg').src = blobURL;
+			}
+		};
+
+		xhr.send();
+	</script>
+</head>
+<body>
+<p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob">https://developer.mozilla.org/en-US/docs/Web/API/Blob</a>
+</p>
+
+<p>
+	A Blob object represents a file-like object of immutable, raw data. Blobs represent data that isn't necessarily in a JavaScript-native format. The File interface is based on Blob, inheriting blob functionality and expanding it to support files on the user's system.
+</p>
+<img id="J_blobImg"  />
+	<!--<video id="player" src="1.mp4" style="position:absolute;top:30px;left:30px;"/>-->
+</body>
+
+</html>
