@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Blob</title>
+    <meta charset="utf-8"/>
+
+    <script type="text/javascript" src="flvparser.js"></script>
+    <script type="text/javascript">
+        // 创建一个8字节的ArrayBuffer
+        var buffer = new ArrayBuffer(8);
+        var view = new Int32Array(buffer);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', './15f03b50ee5b047e7d096f7b30f95f5b.f4v', true);
+        xhr.responseType = 'arraybuffer';
+
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                var flv = new FLVParser(this.response);
+                var parsedInfo = flv.parse();
+
+                var mp3Info = flv.extractAudio();
+                console.log(mp3Info);
+            }
+        };
+
+        xhr.send();
+    </script>
+</head>
+<body>
+<video id="player" src="c5a575e5eba9639556eaa47f71de97e6.mp4" />
+
+<textarea id="J_log" style="height: 400px;"></textarea>
+</body>
+</html>
