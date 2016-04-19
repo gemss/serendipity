@@ -19,8 +19,15 @@
                 var flv = new FLVParser(this.response);
                 var parsedInfo = flv.parse();
 
-                var mp3Info = flv.extractAudio();
-                console.log(mp3Info);
+                var blob = flv.extractAudio();
+                var blobURL = URL.createObjectURL(blob);
+
+                var videoDom = document.getElementById('J_video');
+                videoDom.src = blobURL;
+                videoDom.addEventListener('error', function(e) {
+                    console.log(e, e.code, e.message);
+                    console.log(videoDom.error);
+                });
             }
         };
 
@@ -28,7 +35,7 @@
     </script>
 </head>
 <body>
-<video id="player" src="c5a575e5eba9639556eaa47f71de97e6.mp4" />
+<video id="J_video" controls="controls" autoplay="autoplay"/>
 
 <textarea id="J_log" style="height: 400px;"></textarea>
 </body>

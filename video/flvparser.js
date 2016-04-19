@@ -71,18 +71,21 @@
          * @return {Blob}
          */
         extractAudio: function() {
+            var bytes = this.bytes.slice(0);
             var o = this.parse(),
                 offset = 13;
-            var data;
+            var data = [];
             for (var i = 0, n = o.tags.length; i < n; ++i) {
                 offset += 11;
 
-                if (o.tags[i].type === TAG_TYPE_AUDIO) {
-                    data = this.bytes.slice(offset + 1, offset + o.tags[i].bodyLength)
+                if (o.tags[i].type !== TAG_TYPE_AUDIO) {
+                    // bytes.splice(offset + 1, offset + o.tags[i].bodyLength);
+                    data = data.concat(bytes.slice(offset + 1, offset + o.tags[i].bodyLength)) ;
                 }
                 offset += o.tags[i].bodyLength + 4;
             }
-            return new Blob();
+
+            return new Blob(data, {type: 'audio/mpeg'});
         },
 
         /**
