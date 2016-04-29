@@ -46,25 +46,7 @@ router.post('/upload', function *() {
 
 
 router.get('/', function *() {
-    // ignore non-POSTs
-    if ('POST' != this.method) return yield next;
-
-    // the body isn't multipart, so busboy can't parse it
-    if (!this.request.is('multipart/*')) return yield next
-
-    // multipart upload
-    var parts = parse(this);
-    var part;
-
-    while (part = yield parts) {
-        var stream = fs.createWriteStream(path.join(__dirname, 'public', Math.random().toString()));
-        part.pipe(stream);
-        console.log('uploading %s -> %s', part.filename, stream.path);
-    }
-
-    // this.redirect('/');
-
-    this.body = '{"code": "A00000"}';
+    this.body = 'OK';
 });
 
 // listen

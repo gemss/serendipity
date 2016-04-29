@@ -75,14 +75,25 @@
             var o = this.parse(),
                 offset = 13;
             var data = [];
-            for (var i = 0, n = o.tags.length; i < n; ++i) {
-                offset += 11;
 
-                if (o.tags[i].type !== TAG_TYPE_AUDIO) {
-                    // bytes.splice(offset + 1, offset + o.tags[i].bodyLength);
-                    data = data.concat(bytes.slice(offset + 1, offset + o.tags[i].bodyLength)) ;
-                }
-                offset += o.tags[i].bodyLength + 4;
+
+            while (offset < bytes.length) {
+                var tag = {};
+                tag.type = this.ui8(offset);
+                offset++;
+                tag.bodyLength = this.ui24(offset);
+                offset += 3;
+                tag.timestamp = this.ui24(offset);
+                offset += 3;
+                tag.timestampExtended = this.ui8(offset);
+                offset++;
+                tag.streamId = this.ui24(this);
+                offset += 3;
+                //skip body
+                offset += tag.bodyLength;
+                tag.previousTagSize = this.ui32(offset);
+                offset += 4;
+                o.tags.push(tag);
             }
 
             return new Blob(data, {type: 'audio/mpeg'});
