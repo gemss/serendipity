@@ -3,40 +3,35 @@
 <head>
     <title>Blob</title>
     <meta charset="utf-8"/>
-
-    <script type="text/javascript" src="flvparser.js"></script>
-    <script type="text/javascript">
-        // 创建一个8字节的ArrayBuffer
-        var buffer = new ArrayBuffer(8);
-        var view = new Int32Array(buffer);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', './15f03b50ee5b047e7d096f7b30f95f5b.f4v', true);
-        xhr.responseType = 'arraybuffer';
-
-        xhr.onload = function (e) {
-            if (this.status == 200) {
-                var flv = new FLVParser(this.response);
-                var parsedInfo = flv.parse();
-
-                var blob = flv.extractAudio();
-                var blobURL = URL.createObjectURL(blob);
-
-                var videoDom = document.getElementById('J_video');
-                videoDom.src = blobURL;
-                videoDom.addEventListener('error', function(e) {
-                    console.log(e, e.code, e.message);
-                    console.log(videoDom.error);
-                });
-            }
-        };
-
-        xhr.send();
-    </script>
 </head>
 <body>
-<video id="J_video" controls="controls" autoplay="autoplay"/>
-
+<video id="J_video" controls="controls" autoplay="autoplay"></video>
 <textarea id="J_log" style="height: 400px;"></textarea>
+
+<script type="text/javascript" src="flvparser.js"></script>
+<script type="text/javascript">
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './15f03b50ee5b047e7d096f7b30f95f5b.f4v', true);
+    xhr.responseType = 'arraybuffer';
+
+    xhr.onload = function (e) {
+        if (this.status == 200) {
+            var flv = new FLVParser(this.response);
+            var parsedInfo = flv.parse();
+
+            var blob = flv.extractAudio();
+            var blobURL = URL.createObjectURL(blob);
+
+            var videoDom = document.getElementById('J_video');
+            videoDom.src = blobURL;
+            videoDom.addEventListener('error', function(e) {
+                console.log(e, e.code, e.message);
+                console.log(videoDom.error);
+            });
+        }
+    };
+
+    xhr.send();
+</script>
 </body>
 </html>

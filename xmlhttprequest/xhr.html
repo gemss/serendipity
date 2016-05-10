@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+<div id="example-list-fs" class="example">
+    <button>Add some files</button> <button>List files</button> <button>Remove all files</button>
+    <ul id="example-list-fs-ul"></ul>
+</div>
+
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/path/to/image.png', true);
+
+//    // Hack to pass bytes through unprocessed.
+//    xhr.overrideMimeType('text/plain; charset=x-user-defined');
+
+    xhr.onreadystatechange = function(e) {
+        if (this.readyState == 4 && this.status == 200) {
+            var binStr = this.responseText;
+            for (var i = 0, len = binStr.length; i < len; ++i) {
+                var c = binStr.charCodeAt(i);
+                //String.fromCharCode(c & 0xff);
+                var byte = c & 0xff;  // byte at offset i
+            }
+        }
+    };
+
+    var uInt8Array = new Uint8Array([1, 2, 3]);
+    xhr.send(uInt8Array.buffer);
+</script>
+</body>
+</html>

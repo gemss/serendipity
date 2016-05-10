@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload</title>
+    <style>
+        body {
+            padding: 50px;
+            font: 14px Helvetica, Arial;
+        }
+    </style>
+</head>
+<body>
+<h1>File Upload</h1>
+<p>Try uploading multiple files at a time.</p>
+<form action="http://dev.iqiyi.com:3000/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" multiple>
+    <input type="submit" value="Upload">
+</form>
+
+
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'upload', true);
+
+    //    // Hack to pass bytes through unprocessed.
+    //    xhr.overrideMimeType('text/plain; charset=x-user-defined');
+
+    xhr.setRequestHeader("Content-Type","multipart/form-data; boundary=---------------------------275932272513031");
+    xhr.onreadystatechange = function(e) {
+        if (this.readyState == 4 && this.status == 200) {
+            var binStr = this.responseText;
+            for (var i = 0, len = binStr.length; i < len; ++i) {
+                var c = binStr.charCodeAt(i);
+                //String.fromCharCode(c & 0xff);
+                var byte = c & 0xff;  // byte at offset i
+            }
+        }
+    };
+
+    var uInt8Array = new Uint8Array([1, 2, 3]);
+    xhr.send(uInt8Array.buffer);
+</script>
+</body>
+</html>
