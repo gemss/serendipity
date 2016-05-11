@@ -2,7 +2,7 @@ var koa = require('koa');
 var app = koa();
 
 // x-response-time
-app.use(function *(next){
+app.use(function *(next) {
     var start = new Date;
     yield next;
     var ms = new Date - start;
@@ -11,7 +11,7 @@ app.use(function *(next){
 });
 
 // logger
-app.use(function *(next){
+app.use(function *(next) {
     var start = new Date;
     yield next;
     var ms = new Date - start;
@@ -19,9 +19,9 @@ app.use(function *(next){
 });
 
 // response
-app.use(function *(){
+app.use(function *() {
     console.log('return body!');
     this.body = 'Hello World';
 });
 
-app.listen(3000);
+app.listen(3001);
